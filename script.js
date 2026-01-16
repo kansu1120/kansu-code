@@ -46,6 +46,7 @@ const snippets = {
   "[" : "[/*カーソル*/]",
   "(" : "(/*カーソル*/)",
   "t": `#include <bits/stdc++.h>
+  "vi" :"vector<int>"/*カーソル*/,
 #include <atcoder/all>
 using namespace atcoder;
 using namespace std;
