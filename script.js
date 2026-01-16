@@ -56,7 +56,7 @@ using ll = long long; \n
 const ll INF = 1e18;  \n
 const int inf = 1e9;  \n
 int32_t main(){  \n
-    /*カーソル*/
+    /*カーソル*/\n
 }"
 };
 
