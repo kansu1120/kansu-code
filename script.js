@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const pasteBtn = document.getElementById("paste");
   const suggestionsDiv = document.getElementById("suggestions");
 
+  // --- スニペット辞書 ---
   const snippets = {
     "for": "for (int i = 0; i < n; i++) {\n    /*カーソル*/\n}",
     "if": "if (condition) {\n    /*カーソル*/\n}",
@@ -65,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // ----- 候補表示 -----
-  editor.addEventListener("keyup", (e) => {
+  function updateSuggestions() {
     const word = getCurrentWord();
     const matches = Object.keys(snippets).filter(k => k.startsWith(word));
     if (matches.length === 0 || word === "") {
@@ -80,8 +81,16 @@ document.addEventListener("DOMContentLoaded", () => {
       div.addEventListener("click", () => insertSnippet(k));
       suggestionsDiv.appendChild(div);
     });
+
+    // editorの上に表示
+    const rect = editor.getBoundingClientRect();
+    suggestionsDiv.style.top = (rect.top - matches.length * 40) + "px"; // 候補の高さ目安
+    suggestionsDiv.style.left = rect.left + "px";
     suggestionsDiv.style.display = "block";
-  });
+  }
+
+  editor.addEventListener("input", updateSuggestions); // スマホ対応
+  editor.addEventListener("keyup", updateSuggestions);
 
   function getCurrentWord() {
     const start = editor.selectionStart;
@@ -151,5 +160,4 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.appendChild(msg);
     setTimeout(() => msg.remove(), 1200);
   }
-
 });
