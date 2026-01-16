@@ -43,12 +43,7 @@
       font-size: 16px;
       padding: 9px 13px;
       margin: 2px;
-    }
-
-    /* コピー・ペーストボタンを少し目立たせる */
-    #toolbar button#copy,
-    #toolbar button#paste {
-      background-color: #d0f0ff;
+      type: button; /* 重要 */
     }
   </style>
 </head>
@@ -57,23 +52,22 @@
 <textarea id="editor"></textarea>
 
 <div id="toolbar">
-  <button>()</button>
-  <button>{}</button>
-  <button>[]</button>
-  <button>+</button>
-  <button>-</button>
-  <button>*</button>
-  <button>/</button>
-  <button>&lt;</button>
-  <button>&gt;</button>
-  <button>=</button>
-  <button id="left">←</button>
-  <button id="right">→</button>
-  <button id="copy">コピー</button>
-  <button id="paste">ペースト</button>
+  <button type="button">()</button>
+  <button type="button">{}</button>
+  <button type="button">[]</button>
+  <button type="button">+</button>
+  <button type="button">-</button>
+  <button type="button">*</button>
+  <button type="button">/</button>
+  <button type="button">&lt;</button>
+  <button type="button">&gt;</button>
+  <button type="button">=</button>
+  <button type="button" id="left">←</button>
+  <button type="button" id="right">→</button>
+  <button type="button" id="copy">コピー</button>
+  <button type="button" id="paste">ペースト</button>
 </div>
 
 <script src="script.js" defer></script>
-
 </body>
 </html>
