@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>Kansu Code</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      font-family: monospace;
+    }
+
+    /* エディタのスタイル */
+    #editor {
+      flex: 1;
+      font-size: 16px;
+      padding: 10px;
+      box-sizing: border-box;
+      padding-bottom: 60px; /* toolbarの高さ分の余白を確保 */
+    }
+
+    /* toolbar の通常時（画面下端に固定） */
+    #toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      border-top: 1px solid #ccc;
+      position: fixed; /* 画面下に固定 */
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #f9f9f9;
+      z-index: 1000; /* textareaより上に表示 */
+      height: 50px; /* ボタン高さに合わせて調整 */
+    }
+
+    #toolbar button {
+      flex: 1;
+      padding: 10px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+
+<textarea id="editor"></textarea>
+
+<div id="toolbar">
+  <button>(</button>
+  <button>)</button>
+  <button>{</button>
+  <button>}</button>
+  <button>[</button>
+  <button>]</button>
+  <button>+</button>
+  <button>-</button>
+  <button>*</button>
+  <button>/</button>
+  <button>&lt;</button>
+  <button>&gt;</button>
+  <button>=</button>
+  <button id="left">←</button>
+  <button id="right">→</button>
+</div>
+
+<script src="script.js" defer></script>
+
+</body>
+</html>
