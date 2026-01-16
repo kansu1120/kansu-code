@@ -5,8 +5,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const pasteBtn = document.getElementById("paste");
   const suggestionsDiv = document.getElementById("suggestions");
 
-  // ----- スニペット読み込み -----
   let snippets = {};
+
+  // ----- スニペット読み込み -----
   (async () => {
     try {
       const res = await fetch("snippets.json");
@@ -14,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
         snippets = await res.json();
       }
     } catch {
-      // 読み込み失敗でも無視
+      // 読み込み失敗しても無視
       snippets = {};
     }
   })();
@@ -53,12 +54,12 @@ document.addEventListener("DOMContentLoaded", () => {
         const before = editor.value.slice(0, start - currentLine.length);
         const after = editor.value.slice(end);
 
-        const snippetText = snippets[currentLine].body || snippets[currentLine];
+        const body = snippets[currentLine].body;
+        const snippetText = Array.isArray(body) ? body.join("\n") : body;
         const cursorPos = snippetText.indexOf("/*カーソル*/");
 
         editor.value = before + snippetText.replace("/*カーソル*/", "") + after;
-        editor.setSelectionRange(before.length + (cursorPos >= 0 ? cursorPos : 0),
-                                 before.length + (cursorPos >= 0 ? cursorPos : 0));
+        editor.setSelectionRange(before.length + cursorPos, before.length + cursorPos);
         return;
       }
 
@@ -69,12 +70,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // ----- 候補表示（スマホ対応）-----
-  editor.addEventListener("input", () => {
+  // ----- 候補表示 -----
+  function updateSuggestions() {
     const word = getCurrentWord();
     const matches = Object.keys(snippets).filter(k => k.startsWith(word));
-
-    if (!word || matches.length === 0) {
+    if (matches.length === 0 || word === "") {
       suggestionsDiv.style.display = "none";
       return;
     }
@@ -87,12 +87,15 @@ document.addEventListener("DOMContentLoaded", () => {
       suggestionsDiv.appendChild(div);
     });
 
-    // editor 上に表示
+    // editorの上に表示
     const rect = editor.getBoundingClientRect();
-    suggestionsDiv.style.top = `${rect.top - matches.length * 40}px`; // 上に表示
-    suggestionsDiv.style.left = `${rect.left}px`;
+    suggestionsDiv.style.top = (rect.top - matches.length * 40) + "px"; // 40px高さの目安
+    suggestionsDiv.style.left = rect.left + "px";
     suggestionsDiv.style.display = "block";
-  });
+  }
+
+  editor.addEventListener("input", updateSuggestions);
+  editor.addEventListener("keyup", updateSuggestions);
 
   function getCurrentWord() {
     const start = editor.selectionStart;
@@ -108,12 +111,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const before = editor.value.slice(0, start - word.length);
     const after = editor.value.slice(end);
 
-    const snippetText = snippets[key].body || snippets[key];
+    const body = snippets[key].body;
+    const snippetText = Array.isArray(body) ? body.join("\n") : body;
     const cursorPos = snippetText.indexOf("/*カーソル*/");
 
     editor.value = before + snippetText.replace("/*カーソル*/", "") + after;
-    editor.setSelectionRange(before.length + (cursorPos >= 0 ? cursorPos : 0),
-                             before.length + (cursorPos >= 0 ? cursorPos : 0));
+    editor.setSelectionRange(before.length + cursorPos, before.length + cursorPos);
     editor.focus();
     suggestionsDiv.style.display = "none";
   }
@@ -125,6 +128,7 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const success = document.execCommand("copy");
       if (success) showMessage("コードをコピーしました！");
+      else alert("コピーに失敗しました");
     } catch {
       alert("コピーに失敗しました");
     }
@@ -162,5 +166,4 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.appendChild(msg);
     setTimeout(() => msg.remove(), 1200);
   }
-
 });
