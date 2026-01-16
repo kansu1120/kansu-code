@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // カーソル移動ボタン
       if (btn.id === "left") {
-        editor.setSelectionRange(start - 1, start - 1);
+        editor.setSelectionRange(Math.max(0, start - 1), Math.max(0, start - 1));
         editor.focus();
         return;
       }
@@ -75,16 +75,24 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // ----- iPhone向け: キーボード時に toolbar を浮かせる -----
-  editor.addEventListener("focus", () => {
-    // キーボードの上に toolbar を浮かせる（目安として 250px 上に移動）
+  // ----- iPhone向け: toolbarをエディタ下に表示 -----
+  const updateToolbarPosition = () => {
+    // エディタ下の位置に toolbar を配置
+    const editorRect = editor.getBoundingClientRect();
+    const scrollY = window.scrollY || window.pageYOffset;
     toolbar.style.position = "absolute";
-    toolbar.style.bottom = "250px"; // 必要に応じて調整
-  });
+    toolbar.style.top = (editorRect.bottom + scrollY + 5) + "px"; // 少し余白を追加
+    toolbar.style.left = editorRect.left + "px";
+  };
 
-  editor.addEventListener("blur", () => {
-    // フォーカスが外れたら画面下に固定
-    toolbar.style.position = "fixed";
-    toolbar.style.bottom = "0";
-  });
+  // 初期位置
+  updateToolbarPosition();
+
+  // フォーカス時・blur時に toolbar の位置を再計算
+  editor.addEventListener("focus", updateToolbarPosition);
+  editor.addEventListener("blur", updateToolbarPosition);
+
+  // 画面サイズ変更時も toolbar を再配置
+  window.addEventListener("resize", updateToolbarPosition);
+  window.addEventListener("scroll", updateToolbarPosition);
 });
