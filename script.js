@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ----- ボタン入力機能 -----
   buttons.forEach(btn => {
-    if (btn.id === "copy") return; // コピーは除外
+    if (btn.id === "copy" || btn.id === "paste") return; // コピー・ペーストは除外
 
     btn.addEventListener("click", () => {
       const text = btn.textContent;
@@ -45,8 +45,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // スニペット辞書
       const snippets = {
-        "for": "for (int i = 0; i < n; i++) {\n    \n}",
-        "if": "if (condition) {\n    \n}"
+        "for": "for (int i = 0; i < n; i++) {\n    /*カーソル*/\n}",
+        "if": "if (condition) {\n    /*カーソル*/\n}"
       };
 
       if (snippets[currentLine]) {
@@ -55,9 +55,9 @@ document.addEventListener("DOMContentLoaded", () => {
         const after = editor.value.slice(end);
 
         const snippetText = snippets[currentLine];
-        const cursorPos = snippetText.indexOf("\n    ") + 5; // 2行目の先頭にカーソル
+        const cursorPos = snippetText.indexOf("/*カーソル*/");
 
-        editor.value = before + snippetText + after;
+        editor.value = before + snippetText.replace("/*カーソル*/", "") + after;
         editor.setSelectionRange(
           before.length + cursorPos,
           before.length + cursorPos
@@ -77,10 +77,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // ----- コピー機能（モバイル対応） -----
+  // ----- コピー機能 -----
   const copyBtn = document.getElementById("copy");
   copyBtn.addEventListener("click", () => {
-    editor.focus();
     editor.select();
     try {
       const success = document.execCommand("copy");
@@ -106,4 +105,23 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // ----- ペースト機能 -----
+  const pasteBtn = document.getElementById("paste");
+  pasteBtn.addEventListener("click", async () => {
+    try {
+      const text = await navigator.clipboard.readText();
+      const start = editor.selectionStart;
+      const end = editor.selectionEnd;
+
+      editor.value =
+        editor.value.slice(0, start) +
+        text +
+        editor.value.slice(end);
+
+      editor.setSelectionRange(start + text.length, start + text.length);
+      editor.focus();
+    } catch (err) {
+      alert("ペーストに失敗しました");
+    }
+  });
 });
