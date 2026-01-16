@@ -3,42 +3,45 @@
 <head>
   <meta charset="UTF-8">
   <title>Kansu Code</title>
+  <!-- スマホで最初から拡大せず、ピンチも無効 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <style>
     body {
-      margin: 0;
-      height: 100vh;
+      margin: 10px;             /* 少し余白 */
+      font-family: monospace;
       display: flex;
       flex-direction: column;
-      font-family: monospace;
+      align-items: flex-start;   /* 左上寄せ */
+      height: auto;
     }
 
-    /* エディタのスタイル */
+    /* エディタ */
     #editor {
-      flex: 1;
-      font-size: 16px;
+      width: 95%;               /* 左右に少し余白 */
+      height: 200px;            /* 高さを小さめに */
+      font-size: 18px;
       padding: 10px;
       box-sizing: border-box;
-      padding-bottom: 60px; /* toolbarの高さ分の余白を確保 */
+      margin-bottom: 10px;      /* toolbarとの距離 */
     }
 
-    /* toolbar の通常時（画面下端に固定） */
+    /* toolbar */
     #toolbar {
+      position: absolute;       /* エディタ下に表示 */
+      top: 220px;               /* エディタ下に合わせる */
+      left: 10px;               /* 左寄せ */
       display: flex;
       flex-wrap: wrap;
-      border-top: 1px solid #ccc;
-      position: fixed; /* 画面下に固定 */
-      bottom: 0;
-      left: 0;
-      right: 0;
       background: #f9f9f9;
-      z-index: 1000; /* textareaより上に表示 */
-      height: 50px; /* ボタン高さに合わせて調整 */
+      border: 1px solid #ccc;
+      z-index: 1000;
+      height: auto;
     }
 
     #toolbar button {
-      flex: 1;
-      padding: 10px;
-      font-size: 16px;
+      font-size: 18px;
+      padding: 8px 10px;
+      margin: 2px;
     }
   </style>
 </head>
