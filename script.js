@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const pasteBtn = document.getElementById("paste");
   const suggestionsDiv = document.getElementById("suggestions");
 
-  // --- スニペット辞書 ---
+  // ----- スニペット定義 -----
   const snippets = {
     "for": "for (int i = 0; i < n; i++) {\n    /*カーソル*/\n}",
     "if": "if (condition) {\n    /*カーソル*/\n}",
@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      // 通常の改行のみ
+      // 通常の改行
       e.preventDefault();
       editor.value = editor.value.slice(0, start) + "\n" + editor.value.slice(end);
       editor.setSelectionRange(start + 1, start + 1);
@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // ----- 候補表示 -----
-  function updateSuggestions() {
+  editor.addEventListener("keyup", () => {
     const word = getCurrentWord();
     const matches = Object.keys(snippets).filter(k => k.startsWith(word));
     if (matches.length === 0 || word === "") {
@@ -82,15 +82,9 @@ document.addEventListener("DOMContentLoaded", () => {
       suggestionsDiv.appendChild(div);
     });
 
-    // editorの上に表示
-    const rect = editor.getBoundingClientRect();
-    suggestionsDiv.style.top = (rect.top - matches.length * 40) + "px"; // 候補の高さ目安
-    suggestionsDiv.style.left = rect.left + "px";
+    updateSuggestionsPosition();
     suggestionsDiv.style.display = "block";
-  }
-
-  editor.addEventListener("input", updateSuggestions); // スマホ対応
-  editor.addEventListener("keyup", updateSuggestions);
+  });
 
   function getCurrentWord() {
     const start = editor.selectionStart;
@@ -113,6 +107,21 @@ document.addEventListener("DOMContentLoaded", () => {
     editor.setSelectionRange(before.length + cursorPos, before.length + cursorPos);
     editor.focus();
     suggestionsDiv.style.display = "none";
+  }
+
+  // ----- 候補位置調整 -----
+  function updateSuggestionsPosition() {
+    const toolbar = document.getElementById("toolbar");
+    const rect = toolbar.getBoundingClientRect();
+    const scrollY = window.scrollY || window.pageYOffset;
+    const scrollX = window.scrollX || window.pageXOffset;
+
+    let top = scrollY + rect.top - suggestionsDiv.offsetHeight - 5; // ツールバー上に表示
+    if (top < 0) top = 5; // 画面上端より上にならない
+    let left = scrollX + rect.left;
+
+    suggestionsDiv.style.top = top + "px";
+    suggestionsDiv.style.left = left + "px";
   }
 
   // ----- コピー -----
@@ -160,4 +169,5 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.appendChild(msg);
     setTimeout(() => msg.remove(), 1200);
   }
+
 });
