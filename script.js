@@ -39,10 +39,33 @@ document.addEventListener("DOMContentLoaded", () => {
       const lines = editor.value.slice(0, start).split("\n");
       const currentLine = lines[lines.length - 1].trim();
 
-      const snippets = {
-        "for": "for (int i = 0; i < n; i++) {\n    /*カーソル*/\n}",
-        "if": "if (condition) {\n/*カーソル*/\n}"
-      };
+const snippets = {
+  "for": "for (int i = 0; i < n; i++) {\n    /*カーソル*/\n}",
+  "if": "if (condition) {\n    /*カーソル*/\n}",
+  "t": `#include <bits/stdc++.h>
+#include <atcoder/all>
+using namespace atcoder;
+using namespace std;
+using ll = long long;
+#define rep(i , n) for(int i=0; i< (int)(n); i++)
+#define int long long
+const ll INF = 1e18;
+const int inf = 1e9;
+const int mod = 998244353;
+const int MOD = 1000000007;
+template<class T>
+void chmin(T& a, T b){ if(a > b) a = b; }
+template<class T>
+void chmax(T& a, T b){ if(a < b) a = b; }
+void yes(){cout << "Yes" << endl;}
+void no(){cout << "No" << endl;}
+using mint = modint998244353;
+int32_t main(){
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    /*カーソル*/
+}`
+};
 
       if (snippets[currentLine]) {
         e.preventDefault();
