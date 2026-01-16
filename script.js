@@ -5,15 +5,19 @@ document.addEventListener("DOMContentLoaded", () => {
   const pasteBtn = document.getElementById("paste");
   const suggestionsDiv = document.getElementById("suggestions");
 
-  const snippets = {
-    "for": "for (int i = 0; i < n; i++) {\n    /*カーソル*/\n}",
-    "if": "if (condition) {\n    /*カーソル*/\n}",
-    "{": "{/*カーソル*/}",
-    "[": "[/*カーソル*/]",
-    "(": "(/*カーソル*/)",
-    "vi": "vector<int>/*カーソル*/",
-    "t": "#include <bits/stdc++.h>\nusing namespace std;\nint main(){\n    /*カーソル*/\n}"
-  };
+  // ----- スニペット読み込み -----
+  let snippets = {};
+  (async () => {
+    try {
+      const res = await fetch("snippets.json");
+      if (res.ok) {
+        snippets = await res.json();
+      }
+    } catch {
+      // 失敗しても無視
+      snippets = {};
+    }
+  })();
 
   // ----- ボタン入力 -----
   buttons.forEach(btn => {
@@ -65,7 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // ----- 候補表示 -----
-  editor.addEventListener("keyup", (e) => {
+  editor.addEventListener("keyup", () => {
     const word = getCurrentWord();
     const matches = Object.keys(snippets).filter(k => k.startsWith(word));
     if (matches.length === 0 || word === "") {
