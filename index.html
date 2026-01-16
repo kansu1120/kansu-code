@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>Kanau Code</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      font-family: monospace;
+    }
+
+    #editor {
+      flex: 1;
+      font-size: 16px;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+
+    #toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      border-top: 1px solid #ccc;
+    }
+
+    #toolbar button {
+      flex: 1;
+      padding: 10px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+
+<textarea id="editor"></textarea>
+
+<div id="toolbar">
+  <button>(</button>
+  <button>)</button>
+  <button>{</button>
+  <button>}</button>
+  <button>[</button>
+  <button>]</button>
+  <button>+</button>
+  <button>-</button>
+  <button>*</button>
+  <button>/</button>
+  <button>&lt;</button>
+  <button>&gt;</button>
+  <button>=</button>
+  <button id="left">←</button>
+  <button id="right">→</button>
+</div>
+
+<script src="script.js" defer></script>
+
+</body>
+</html>
