@@ -45,8 +45,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // スニペット辞書
       const snippets = {
-        "for": "for (int i = 0; i < n; i++) {\n    /*カーソル*/\n}",
-        "if": "if (condition) {\n    /*カーソル*/\n}"
+        "for": "for (int i = 0; i < n; i++) {\n    \n}",
+        "if": "if (condition) {\n    \n}"
       };
 
       if (snippets[currentLine]) {
@@ -55,9 +55,9 @@ document.addEventListener("DOMContentLoaded", () => {
         const after = editor.value.slice(end);
 
         const snippetText = snippets[currentLine];
-        const cursorPos = snippetText.indexOf("/*カーソル*/");
+        const cursorPos = snippetText.indexOf("\n    ") + 5; // 2行目の先頭にカーソル
 
-        editor.value = before + snippetText.replace("/*カーソル*/", "") + after;
+        editor.value = before + snippetText + after;
         editor.setSelectionRange(
           before.length + cursorPos,
           before.length + cursorPos
@@ -80,6 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ----- コピー機能（モバイル対応） -----
   const copyBtn = document.getElementById("copy");
   copyBtn.addEventListener("click", () => {
+    editor.focus();
     editor.select();
     try {
       const success = document.execCommand("copy");
