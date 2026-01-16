@@ -3,33 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <title>Kansu Code</title>
-  <!-- スマホで最初から拡大せず、ピンチも無効 -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <!-- iPhoneで最初から小さめ表示、拡大禁止 -->
+  <meta name="viewport" content="width=device-width, initial-scale=0.7, user-scalable=no">
   <style>
     body {
-      margin: 10px;             /* 少し余白 */
+      margin: 10px;
       font-family: monospace;
       display: flex;
       flex-direction: column;
-      align-items: flex-start;   /* 左上寄せ */
+      align-items: flex-start;
       height: auto;
     }
 
     /* エディタ */
     #editor {
-      width: 95%;               /* 左右に少し余白 */
-      height: 200px;            /* 高さを小さめに */
-      font-size: 18px;
-      padding: 10px;
+      width: 90%;          /* 左右少し余白 */
+      height: 150px;       /* 小さめ高さ */
+      font-size: 16px;     /* 小さめ文字 */
+      padding: 8px;
       box-sizing: border-box;
-      margin-bottom: 10px;      /* toolbarとの距離 */
+      margin-bottom: 8px;  /* toolbarとの距離 */
     }
 
     /* toolbar */
     #toolbar {
-      position: absolute;       /* エディタ下に表示 */
-      top: 220px;               /* エディタ下に合わせる */
-      left: 10px;               /* 左寄せ */
+      position: absolute;  
+      top: 160px;           /* editor下に配置 */
+      left: 8px;            /* 左寄せ */
       display: flex;
       flex-wrap: wrap;
       background: #f9f9f9;
@@ -39,8 +39,8 @@
     }
 
     #toolbar button {
-      font-size: 18px;
-      padding: 8px 10px;
+      font-size: 14px;      /* 小さめ文字 */
+      padding: 6px 8px;
       margin: 2px;
     }
   </style>
