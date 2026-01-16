@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const editor = document.getElementById("editor");
   const buttons = document.querySelectorAll("#toolbar button");
   const toolbar = document.getElementById("toolbar");
+  const copyBtn = document.getElementById("copy");
 
   // ----- ボタン入力機能 -----
   buttons.forEach(btn => {
@@ -34,7 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // ----- スニペット定義 -----
+  // ----- スニペット定義（| がカーソル位置） -----
   const snippets = {
     "for": "for (int i = 0; i < n; i++) {\n    |\n}",
     "if": "if (condition) {\n    |\n}"
@@ -81,7 +82,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // ----- iPhone向け: toolbar をエディタ下に固定 -----
+  // ----- コピー機能 -----
+  copyBtn.addEventListener("click", () => {
+    editor.select();
+    navigator.clipboard.writeText(editor.value)
+      .then(() => alert("コードをコピーしました！"))
+      .catch(() => alert("コピーに失敗しました"));
+  });
+
+  // ----- iPhone向け: toolbar を editor 下に配置 -----
   const updateToolbarPosition = () => {
     const editorRect = editor.getBoundingClientRect();
     const scrollY = window.scrollY || window.pageYOffset;
