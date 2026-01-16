@@ -49,6 +49,28 @@
     #readme-link {
       margin-top: 10px;
     }
+
+    /* スニペット候補表示 */
+    #suggestions {
+      position: absolute;
+      top: 400px; /* editor下に固定 */
+      left: 10px;
+      background: #fff;
+      border: 1px solid #ccc;
+      padding: 4px;
+      z-index: 1500;
+      display: none;
+    }
+
+    #suggestions div {
+      padding: 2px 6px;
+      cursor: pointer;
+    }
+
+    #suggestions div:hover {
+      background: #d0f0ff;
+    }
+
   </style>
 </head>
 <body>
@@ -76,8 +98,10 @@
   <button type="button" id="paste">ペースト</button>
 </div>
 
+<div id="suggestions"></div>
+
 <div id="readme-link">
-  <a href="https://kansu1120.github.io/kansu-code-editor/">https://kansu1120.github.io/kansu-code-editor/</a>
+  <a href="https://kansu1120.github.io/kansu-code-editor/">README.md</a>
 </div>
 
 <script src="script.js" defer></script>
