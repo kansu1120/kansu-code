@@ -1,80 +1,3 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <title>Kansu Code</title>
-  <!-- iPhoneで最初から小さめ表示、拡大禁止 -->
-  <meta name="viewport" content="width=device-width, initial-scale=0.7, user-scalable=no">
-  <style>
-    body {
-      margin: 10px;
-      font-family: monospace;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      height: 100vh;       
-      overflow: hidden;     
-    }
-
-    /* エディタ */
-    #editor {
-      width: 100%;          
-      height: 160px;       
-      font-size: 16px;     
-      padding: 8px;
-      box-sizing: border-box;
-      margin-bottom: 8px;  
-    }
-
-    /* toolbar */
-    #toolbar {
-      position: absolute;  
-      top: 170px;          
-      left: 0;             
-      right: 0;            
-      display: flex;
-      flex-wrap: wrap;      
-      justify-content: flex-start;
-      background: #f9f9f9;
-      border: 1px solid #ccc;
-      z-index: 1000;
-      padding: 4px;        
-    }
-
-    #toolbar button {
-      font-size: 16px;      
-      padding: 9px 13px;    
-      margin: 2px;
-      flex: none;           
-    }
-
-    /* コピー用ボタンを少し目立たせる */
-    #toolbar button#copy {
-      background-color: #d0f0ff;
-    }
-  </style>
-</head>
-<body>
-
-<textarea id="editor"></textarea>
-
-<div id="toolbar">
-  <button>()</button>
-  <button>{}</button>
-  <button>[]</button>
-  <button>+</button>
-  <button>-</button>
-  <button>*</button>
-  <button>/</button>
-  <button>&lt;</button>
-  <button>&gt;</button>
-  <button>=</button>
-  <button id="left">←</button>
-  <button id="right">→</button>
-  <button id="copy">コピー</button>
-</div>
-
-<script>
 document.addEventListener("DOMContentLoaded", () => {
   const editor = document.getElementById("editor");
   const buttons = document.querySelectorAll("#toolbar button");
@@ -95,7 +18,6 @@ document.addEventListener("DOMContentLoaded", () => {
         editor.focus();
         return;
       }
-
       if (btn.id === "right") {
         editor.setSelectionRange(start + 1, start + 1);
         editor.focus();
@@ -155,12 +77,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // ----- コピー機能 -----
+  // ----- コピー機能（モバイル対応） -----
   const copyBtn = document.getElementById("copy");
   copyBtn.addEventListener("click", () => {
     editor.select();
-    navigator.clipboard.writeText(editor.value)
-      .then(() => {
+    try {
+      const success = document.execCommand("copy");
+      if (success) {
         const msg = document.createElement("div");
         msg.textContent = "コードをコピーしました！";
         msg.style.position = "fixed";
@@ -174,12 +97,12 @@ document.addEventListener("DOMContentLoaded", () => {
         msg.style.zIndex = 2000;
         document.body.appendChild(msg);
         setTimeout(() => msg.remove(), 1200);
-      })
-      .catch(() => alert("コピーに失敗しました"));
+      } else {
+        alert("コピーに失敗しました");
+      }
+    } catch (err) {
+      alert("コピーに失敗しました");
+    }
   });
 
 });
-</script>
-
-</body>
-</html>
