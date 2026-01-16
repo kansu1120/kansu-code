@@ -4,8 +4,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const toolbar = document.getElementById("toolbar");
   const copyBtn = document.getElementById("copy");
 
-  // ----- ボタン入力機能 -----
+  // ----- ボタン入力機能（コピー用ボタンは除外） -----
   buttons.forEach(btn => {
+    if (btn.id === "copy") return; // コピー専用ボタンはスキップ
+
     btn.addEventListener("click", () => {
       const text = btn.textContent;
       const start = editor.selectionStart;
